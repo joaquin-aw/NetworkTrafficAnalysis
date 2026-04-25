@@ -1,0 +1,7 @@
+*.pcap
+*.pcapng
+traffic_data.json
+network_traffic_analysis.html
+venv/
+__pycache__/
+.env/
