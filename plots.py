@@ -32,7 +32,10 @@ port_labels = {
     21: "FTP",
     67: "DHCP",
     123: "NTP",
-    445: "SMB"
+    445: "SMB",
+    5353: "mDNS",
+    1900: "UPnP",
+    5355: "LLMNR"
 }
 
 sus_ports = {
@@ -49,8 +52,8 @@ df["port_label"] = df["dst_port"].map(port_labels).fillna("Other")
 df["sus_port"] = df["dst_port"].map(sus_ports)
 sus_traffic = df[df["sus_port"].notna()]
 
-fig3 = px.histogram(df, x='port_label', title='Port Activity')
-
+fig3 = px.bar(df, x='port_label', title='Port Activity')
+#fig3.update_layout(margin=dict(b=150))
 
 # combine
 fig = sp.make_subplots(rows=2, cols=2,
@@ -60,18 +63,22 @@ fig.add_trace(fig1.data[0], row=1, col=1)
 fig.add_trace(fig2.data[0], row=1, col=2)
 fig.add_trace(fig3.data[0], row=2, col=1)
 
+
 if not sus_traffic.empty:
-    fig4 = px.histogram(sus_traffic, x='sus_port', title='Known Suspicious Port Activity')
+    fig4 = px.bar(sus_traffic, x='sus_port', title='Known Suspicious Port Activity')
     fig.add_trace(fig4.data[0], row=2, col=2)
+    #fig4.update_layout(margin=dict(b=150))
+    #fig.update_xaxes(tickangle=45, row=2, col=2)
 
     fig.update_layout(
-    height=800,
-    width=1200,
-    title_text=f"Network Traffic Analysis | Local Devices: {unique_devices} | Total Packets: {total_packets} | Suspicious Port Activity Detected")
+        height=1200,
+        width=1200,
+        title_text=f"Network Traffic Analysis | Local Devices: {unique_devices} | Total Packets: {total_packets} | Suspicious Port Activity Detected"
+    )
     
 else:
     fig.update_layout(
-        height=800,
+        height=1200,
         width=1200,
         title_text=f"Network Traffic Analysis | Local Devices: {unique_devices} | Total Packets: {total_packets} | No Suspicious Port Activity Detected"
     )
