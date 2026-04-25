@@ -21,7 +21,7 @@ total_packets = len(df)
 
 # figures
 fig1 = px.line(df, x='timestamp', y='size', title='Network Traffic Over Time')
-fig2 = px.histogram(df, x='protocol', title='Protocol Distribution')
+fig2 = px.bar(df, x='protocol', title='Protocol Distribution')
 
 #ports
 port_labels = {
@@ -71,14 +71,14 @@ if not sus_traffic.empty:
     #fig.update_xaxes(tickangle=45, row=2, col=2)
 
     fig.update_layout(
-        height=1200,
+        height=800,
         width=1200,
         title_text=f"Network Traffic Analysis | Local Devices: {unique_devices} | Total Packets: {total_packets} | Suspicious Port Activity Detected"
     )
     
 else:
     fig.update_layout(
-        height=1200,
+        height=800,
         width=1200,
         title_text=f"Network Traffic Analysis | Local Devices: {unique_devices} | Total Packets: {total_packets} | No Suspicious Port Activity Detected"
     )
